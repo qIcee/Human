@@ -1,0 +1,56 @@
+[
+{
+  "directory": "C:/projects/Human/build",
+  "command": "C:\\Tools\\Msys\\ucrt64\\bin\\g++.exe  @CMakeFiles/Human.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\Human.dir\\src\\main.cpp.obj -c C:\\projects\\Human\\src\\main.cpp",
+  "file": "C:/projects/Human/src/main.cpp",
+  "output": "CMakeFiles/Human.dir/src/main.cpp.obj"
+},
+{
+  "directory": "C:/projects/Human/build",
+  "command": "C:\\Tools\\Msys\\ucrt64\\bin\\g++.exe  @CMakeFiles/Human.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\Human.dir\\src\\human.cpp.obj -c C:\\projects\\Human\\src\\human.cpp",
+  "file": "C:/projects/Human/src/human.cpp",
+  "output": "CMakeFiles/Human.dir/src/human.cpp.obj"
+},
+{
+  "directory": "C:/projects/Human/build",
+  "command": "C:\\Tools\\Msys\\ucrt64\\bin\\g++.exe  @CMakeFiles/Human.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\Human.dir\\src\\simulation.cpp.obj -c C:\\projects\\Human\\src\\simulation.cpp",
+  "file": "C:/projects/Human/src/simulation.cpp",
+  "output": "CMakeFiles/Human.dir/src/simulation.cpp.obj"
+},
+{
+  "directory": "C:/projects/Human/build",
+  "command": "C:\\Tools\\Msys\\ucrt64\\bin\\g++.exe  @CMakeFiles/Human.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\Human.dir\\src\\organs\\heart.cpp.obj -c C:\\projects\\Human\\src\\organs\\heart.cpp",
+  "file": "C:/projects/Human/src/organs/heart.cpp",
+  "output": "CMakeFiles/Human.dir/src/organs/heart.cpp.obj"
+},
+{
+  "directory": "C:/projects/Human/build",
+  "command": "C:\\Tools\\Msys\\ucrt64\\bin\\g++.exe  @CMakeFiles/Human.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\Human.dir\\src\\organs\\brain.cpp.obj -c C:\\projects\\Human\\src\\organs\\brain.cpp",
+  "file": "C:/projects/Human/src/organs/brain.cpp",
+  "output": "CMakeFiles/Human.dir/src/organs/brain.cpp.obj"
+},
+{
+  "directory": "C:/projects/Human/build",
+  "command": "C:\\Tools\\Msys\\ucrt64\\bin\\g++.exe  @CMakeFiles/Human.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\Human.dir\\src\\muscles\\musclegroup.cpp.obj -c C:\\projects\\Human\\src\\muscles\\musclegroup.cpp",
+  "file": "C:/projects/Human/src/muscles/musclegroup.cpp",
+  "output": "CMakeFiles/Human.dir/src/muscles/musclegroup.cpp.obj"
+},
+{
+  "directory": "C:/projects/Human/build",
+  "command": "C:\\Tools\\Msys\\ucrt64\\bin\\g++.exe  @CMakeFiles/Human.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\Human.dir\\src\\systems\\muscularsystem.cpp.obj -c C:\\projects\\Human\\src\\systems\\muscularsystem.cpp",
+  "file": "C:/projects/Human/src/systems/muscularsystem.cpp",
+  "output": "CMakeFiles/Human.dir/src/systems/muscularsystem.cpp.obj"
+},
+{
+  "directory": "C:/projects/Human/build",
+  "command": "C:\\Tools\\Msys\\ucrt64\\bin\\g++.exe  @CMakeFiles/Human.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\Human.dir\\src\\systems\\nervoussystem.cpp.obj -c C:\\projects\\Human\\src\\systems\\nervoussystem.cpp",
+  "file": "C:/projects/Human/src/systems/nervoussystem.cpp",
+  "output": "CMakeFiles/Human.dir/src/systems/nervoussystem.cpp.obj"
+},
+{
+  "directory": "C:/projects/Human/build",
+  "command": "C:\\Tools\\Msys\\ucrt64\\bin\\g++.exe  @CMakeFiles/Human.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\Human.dir\\src\\systems\\cardiovascularsystem.cpp.obj -c C:\\projects\\Human\\src\\systems\\cardiovascularsystem.cpp",
+  "file": "C:/projects/Human/src/systems/cardiovascularsystem.cpp",
+  "output": "CMakeFiles/Human.dir/src/systems/cardiovascularsystem.cpp.obj"
+}
+]
