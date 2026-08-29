@@ -1,0 +1,4 @@
+First idea: Implement heart, work from there.
+
+Heart pumps blood to other organs, acts as a motor of some sort. Why does heart rate, or in general cardiac output, vary? The body needs supplies, the body signals the brain via nervous system(NS). The brain then signals the heart to speed up or slow down.
+Heartrate adapts now. The next logical step is to close the circuit by implementing the cardiovascular system(CVS). This requires some sort of topology to track the vessel mechanisms between certain points.

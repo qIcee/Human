@@ -22,13 +22,16 @@ void Heart::update(double dt, const NervousOutput& nervous_output) {
     if (state.heart_rate < 0.5) state.heart_rate = 0.5;
 }
 
+
+
+double Heart::cardiac_output() const {
+    return state.heart_rate*state.stroke_volume*60; 
+}
+
+
 void Heart::status() const {
     std::cout << "Heart Frequency(in BPM): "  << state.heart_rate * 60
               << "\nStroke Volume(in mL): "  << state.stroke_volume
               << "\nCardiac Output(in mL/min): " << cardiac_output()
               << std::endl;
-}
-
-double Heart::cardiac_output() const {
-    return state.heart_rate*state.stroke_volume*60; 
 }

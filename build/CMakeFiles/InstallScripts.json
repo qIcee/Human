@@ -1,7 +1,7 @@
 {
 	"InstallScripts" : 
 	[
-		"C:/projects/Human/build/cmake_install.cmake"
+		"D:/Personal/Projects/Human-1/build/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

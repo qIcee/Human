@@ -1,4 +1,4 @@
-# Install script for directory: C:/projects/Human
+# Install script for directory: D:/Personal/Projects/Human-1
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,13 +34,13 @@ endif()
 
 # Set path to fallback-tool for dependency-resolution.
 if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "C:/Tools/Msys/ucrt64/bin/objdump.exe")
+  set(CMAKE_OBJDUMP "D:/Tools/msys2/ucrt64/bin/objdump.exe")
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "C:/projects/Human/build/install_local_manifest.txt"
+  file(WRITE "D:/Personal/Projects/Human-1/build/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
 if(CMAKE_INSTALL_COMPONENT)
@@ -56,6 +56,6 @@ else()
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "C:/projects/Human/build/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "D:/Personal/Projects/Human-1/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

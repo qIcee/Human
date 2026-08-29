@@ -8,6 +8,7 @@
 
 struct BrainState {
     BrainInput state;
+    // more to come
 };
 
 
