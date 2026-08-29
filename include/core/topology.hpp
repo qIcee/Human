@@ -9,8 +9,8 @@ struct Node {
 };
 
 struct Edge {
-    short source_id;
-    short target_id;
+    int source_id;
+    int target_id;
 };
 
 struct Topology {

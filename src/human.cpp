@@ -3,9 +3,11 @@
 
 
 Human::Human() {
+    // organs
     organs_vector.push_back(&organs.heart);   
 
 
+    // muscles
     muscles_vector.push_back(&muscles.arms);
     muscles_vector.push_back(&muscles.back);
     muscles_vector.push_back(&muscles.chest);
@@ -26,6 +28,9 @@ Human::Human() {
     for (MuscleGroup* muscle : muscles_vector) {
         nervous_system.sensor_vector.push_back(&muscle->metabolic_sensor);
     }
+
+    // cardiovascular system
+    cardiovascular_system.heart = &organs.heart;
 
 }
 
