@@ -1,7 +1,0 @@
-# ninja log v7
-30	470	8049199497178567	CMakeFiles/Human.dir/src/heart.cpp.obj	4a2437481ff8480
-24	567	8049199497114051	CMakeFiles/Human.dir/src/main.cpp.obj	8638c72be188c3ea
-47	568	8049199497337741	CMakeFiles/Human.dir/src/simulation.cpp.obj	955144b9ad0a7731
-38	606	8049199497248734	CMakeFiles/Human.dir/src/human.cpp.obj	23247eee9f26b80
-71	409	8049201027072026	CMakeFiles/Human.dir/src/main.cpp.obj	8638c72be188c3ea
-409	524	8049201030467768	Human.exe	afbec95fa7f5b7b8
