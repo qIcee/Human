@@ -3,13 +3,15 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-
+#include <unordered_map>
 
 CardioVascularSystem::CardioVascularSystem(Heart* heart) {
     this->heart = heart;
 
     load_topology("../data/processed/vascular_nodes.csv", "../data/processed/vascular_vessels.csv");
     load_vessels("../data/processed/vascular_vessels.csv");
+    build_capillary_beds();
+
 }
 
 void CardioVascularSystem::boot(double dt) {
@@ -92,6 +94,7 @@ void CardioVascularSystem::load_topology(const std::string& nodes_path, const st
         3934,    // Superior vena cava -> Heart
         heart_node.id
     });
+    topology.nodes.push_back(heart_node);
 }
 
 void CardioVascularSystem::load_vessels(const std::string& vessels_path) {
@@ -103,8 +106,9 @@ void CardioVascularSystem::load_vessels(const std::string& vessels_path) {
     std::getline(vessels_file, line); // skip header
 
     while (std::getline(vessels_file, line)) {
-        if (line.empty())
+        if (line.empty()) {
             continue;
+        }
 
         std::stringstream stream(line);
         std::string value;
@@ -118,37 +122,34 @@ void CardioVascularSystem::load_vessels(const std::string& vessels_path) {
         // name
         std::getline(stream, vessel.name, ',');
 
-        // node_a - topology information, skip
+        // topology
         std::getline(stream, value, ',');
+        vessel.node_a = std::stoi(value);
 
-        // node_b - topology information, skip
         std::getline(stream, value, ',');
+        vessel.node_b = std::stoi(value);
 
-        // length
+        // geometry
         std::getline(stream, value, ',');
         vessel.length = std::stod(value);
 
-        // radius_a
         std::getline(stream, value, ',');
         vessel.radius_a = std::stod(value);
 
-        // radius_b
         std::getline(stream, value, ',');
         vessel.radius_b = std::stod(value);
 
-        // vessel volume approximation
+        // initial vessel volume: conical-frustum approximation
         const double PI = 3.14159265358979323846;
-        vessel.blood_volume = (PI * vessel.length / 3.0) * (vessel.radius_a * vessel.radius_a + 
-                                                            vessel.radius_a * vessel.radius_b +
-                                                            vessel.radius_b * vessel.radius_b); 
+        vessel.blood_volume =
+            (PI * vessel.length / 3.0) *
+            (vessel.radius_a * vessel.radius_a +
+             vessel.radius_a * vessel.radius_b +
+             vessel.radius_b * vessel.radius_b);
 
         // type
         std::getline(stream, value, ',');
-        if (value == "artery")
-            vessel.type = 1;
-        else
-            vessel.type = 0;
-        
+        vessel.type = (value == "artery") ? 1 : 0;
 
         // region
         std::getline(stream, value, ',');
@@ -158,12 +159,134 @@ void CardioVascularSystem::load_vessels(const std::string& vessels_path) {
         std::getline(stream, value, ',');
         vessel.perforator = (value == "True");
 
+        // metadata for capillary-bed grouping
+        std::getline(stream, value, ',');
+        vessel.vascular_territory = std::stoi(value);
+
+        std::getline(stream, value, ',');
+        vessel.connection_a = std::stoi(value);
+
+        std::getline(stream, value, ',');
+        vessel.connection_b = std::stoi(value);
+
         vessels.push_back(vessel);
     }
 }
 
+void CardioVascularSystem::build_capillary_beds() {
+    capillary_beds.clear();
+
+    // node-id -> number of real connected vessels
+    std::unordered_map<int, int> node_connection_count;
+
+    for (const Vessel& vessel : vessels) {
+        node_connection_count[vessel.node_a]++;
+        node_connection_count[vessel.node_b]++;
+    }
+
+    // returns the loose endpoint of a vessel.
+    // returns -1 if it has no unique loose endpoint.
+    auto get_terminal_node =
+        [&node_connection_count](const Vessel& vessel) {
+
+        bool node_a_is_terminal =
+            node_connection_count.at(vessel.node_a) == 1;
+
+        bool node_b_is_terminal =
+            node_connection_count.at(vessel.node_b) == 1;
+
+        // neither terminal, or an isolated vessel with two loose ends.
+        if (node_a_is_terminal == node_b_is_terminal) {
+            return -1;
+        }
+
+        return node_a_is_terminal
+            ? vessel.node_a
+            : vessel.node_b;
+    };
+
+    // connection-id -> terminal venous ports
+    std::unordered_map<int, std::vector<VascularPort>>
+        venous_connections;
+
+    // register all terminal veins under their Connection-ID.
+    for (int vessel_index = 0;
+         vessel_index < static_cast<int>(vessels.size());
+         vessel_index++) {
+
+        const Vessel& vessel = vessels[vessel_index];
+
+        int terminal_node = get_terminal_node(vessel);
+
+        if (terminal_node == -1 || vessel.type != 0) {
+            continue;
+        }
+
+        VascularPort port;
+        port.vessel_index = vessel_index;
+        port.node_id = terminal_node;
+
+        if (vessel.connection_a != -1) {
+            venous_connections[vessel.connection_a].push_back(port);
+        }
+
+        if (vessel.connection_b != -1) {
+            venous_connections[vessel.connection_b].push_back(port);
+        }
+    }
+
+    // build one CapillaryBed per terminal artery.
+    for (int vessel_index = 0;
+         vessel_index < static_cast<int>(vessels.size());
+         vessel_index++) {
+
+        const Vessel& vessel = vessels[vessel_index];
+
+        int terminal_node = get_terminal_node(vessel);
+
+        if (terminal_node == -1 || vessel.type != 1) {
+            continue;
+        }
+
+        CapillaryBed bed;
+
+        bed.arterial_input.vessel_index = vessel_index;
+        bed.arterial_input.node_id = terminal_node;
+
+        // add venous targets associated with one Connection-ID.
+        auto add_venous_outputs =
+            [&venous_connections, &bed](int connection_id) {
+
+            if (connection_id == -1) {
+                return;
+            }
+
+            auto found = venous_connections.find(connection_id);
+
+            // connection-ID exists on the artery, but no terminal vein
+            // with that ID was found.
+            if (found == venous_connections.end()) {
+                return;
+            }
+
+            for (const VascularPort& port : found->second) {
+                bed.venous_outputs.push_back(port);
+            }
+        };
+
+        add_venous_outputs(vessel.connection_a);
+        add_venous_outputs(vessel.connection_b);
+
+        // aorta / unconnected terminal arteries stay outside this system.
+        if (bed.venous_outputs.empty()) {
+            continue;
+        }
+
+        capillary_beds.push_back(bed);
+    }
+}
+
 void CardioVascularSystem::update(double dt) {
-    update_blood_velocity(dt);
     update_blood(dt);
 }
 
@@ -297,3 +420,4 @@ void CardioVascularSystem::update_vessel_transfer(double dt, std::vector<double>
         }
     }
 }
+
